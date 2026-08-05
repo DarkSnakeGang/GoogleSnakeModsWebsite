@@ -33,6 +33,60 @@ window.webSnake.urlMap.forEach(rule => {
 });
 */
 
+/*
+  Reduces an xjs url down to the parts that identify which bundle is being requested.
+  Everything else (md, k, ck, am, rs, d, ed, dg, br, ujg, ichc, cb) is rebuilt by Google on every
+  deploy, so a url-rules.js entry captured from an older build stops matching by exact string even
+  though it still points at the same code. The module list and the xjs parameter survive those
+  rebuilds, so they are what we key on.
+*/
+function getXjsFingerprint(url) {
+  if(typeof url !== 'string') {return null;}
+
+  //The module list is the /m=... path segment, which runs until the query string
+  let moduleList = url.match(/\/m=([^\/?#]+)/);
+
+  if(!moduleList) {return null;}
+
+  let xjsParam = url.match(/[?&]xjs=([^&#]*)/);
+
+  return 'm=' + moduleList[1] + '&xjs=' + (xjsParam ? xjsParam[1] : '');
+}
+
+//Returns the local file a url should be served from, or null if it should be left alone
+window.webSnake.resolveUrl = function(url) {
+  if(typeof url !== 'string') {return null;}
+
+  url = makeUrlAbsolute(url);
+
+  if(!Array.isArray(window.webSnake.urlMap)) {return null;}
+
+  let mapping = window.webSnake.urlMap.find(m=>m.oldUrl === url);
+
+  if(mapping && mapping.newUrl) {
+    window.webSnake.logUrlChanges && console.log('Redirecting url: ' + url);
+    return mapping.newUrl;
+  }
+
+  //Only the game bundle gets the looser fingerprint treatment. The page pulls down several other
+  //xjs chunks and none of them should ever be swapped for a local file.
+  if(!url.includes('/xjs/_/js/')) {return null;}
+
+  let fingerprint = getXjsFingerprint(url);
+
+  if(!fingerprint) {return null;}
+
+  mapping = window.webSnake.urlMap.find(m=>getXjsFingerprint(m.oldUrl) === fingerprint);
+
+  if(mapping && mapping.newUrl) {
+    //Logged separately from an exact hit so it's obvious when url-rules.js has gone stale
+    window.webSnake.logUrlChanges && console.log('Redirecting url (fingerprint match, url-rules.js is out of date): ' + url + ' -> ' + mapping.newUrl);
+    return mapping.newUrl;
+  }
+
+  return null;
+}
+
 //Block urls in xhr
 window.oldXhrOpen = XMLHttpRequest.prototype.open;
 XMLHttpRequest.prototype.open = function () {
@@ -43,23 +97,60 @@ XMLHttpRequest.prototype.open = function () {
     throw new Error('Blocking url ' + url); //Slightly sketchy to error here as it may have side effects. This seems ok in practise
   }
 
+  //snake-loader.js fetches the game bundle over xhr, so the redirect has to happen here too
+  let xhrTarget = window.webSnake.resolveUrl(arguments[1]);
+
+  if(xhrTarget) {
+    arguments[1] = xhrTarget;
+  }
+
   return oldXhrOpen.apply(this, arguments);
 };
 
 window.oldFetch = window.fetch;
 
-window.fetch = function(url) {
-  if(typeof url === 'string') {
-    let mapping = window.webSnake.urlMap.find(m=>m.oldUrl === url);
+window.fetch = function(resource) {
+  let isRequestObject = typeof Request !== 'undefined' && resource instanceof Request;
+  let url = null;
 
-    if(mapping && mapping.newUrl) {
-      window.webSnake.logUrlChanges && console.log('Redirecting url: ' + url);
-      arguments[0] = mapping.newUrl;
-    }
+  if(typeof resource === 'string') {
+    url = resource;
+  } else if(typeof URL !== 'undefined' && resource instanceof URL) {
+    url = resource.href;
+  } else if(isRequestObject) {
+    url = resource.url;
+  }
+
+  let target = window.webSnake.resolveUrl(url);
+
+  if(target) {
+    //Rebuild the Request rather than passing the bare url so method/headers/body aren't dropped
+    arguments[0] = isRequestObject ? new Request(target, resource) : target;
   }
 
   return window.oldFetch(...arguments);
 }
+
+/*
+  snake-loader.js pulls the game bundle in by appending a <script> to the body, so neither of the
+  interceptors above sees it. snake-mod-loader-web.js wraps appendChild too, but only rewrites on
+  an exact url match, and it hands anything it doesn't claim back to whatever appendChild it found
+  first. Patching here means we sit underneath that wrapper and still catch the bundle when
+  url-rules.js has gone stale.
+*/
+document.body.appendChildNative = document.body.appendChild;
+
+document.body.appendChild = function(el) {
+  if(el && el.tagName === 'SCRIPT') {
+    let scriptTarget = window.webSnake.resolveUrl(el.src);
+
+    if(scriptTarget) {
+      el.src = scriptTarget;
+    }
+  }
+
+  return document.body.appendChildNative(el);
+};
 
 function makeUrlAbsolute(url) {
   //If url starts with / then add https://www.google.com
