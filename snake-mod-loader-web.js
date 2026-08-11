@@ -1,5 +1,5 @@
 let IS_DEVELOPER_MODE = false;
-let VERSION = '1.1.0';//Gets set to version in build script
+let VERSION = '1.1.1';//Gets set to version in build script
 const UPDATE_URL = 'https://github.com/DarkSnakeGang/GoogleSnakeModLoader/raw/main/build/snake-mod-loader-fbx.user.js';//Gets set from build script
 const WEB_VERSION = true;//web snake
 const IS_FBX_OR_WEB = WEB_VERSION || window.location.href.includes('fbx?fbx=snake_arcade');
@@ -427,6 +427,190 @@ let addModSelectorPopup = function() {
     --mod-loader-desc-mobile-bg: #3a393c;
   }
 
+  /*PuddingMod-matched controls — ONLY while .pudding-mod-theme is on the modloader containers.
+    All of these are gated on that class so the normal light/dark modloader is unchanged.*/
+  #mod-indicator.pudding-mod-theme #mod-loader-title h1,
+  #mod-selector-dialogue-container.pudding-mod-theme #mod-loader-title h1,
+  #start-message-dialogue-container.pudding-mod-theme #mod-loader-title h1,
+  #try-gsm-dialogue-container.pudding-mod-theme #mod-loader-title h1 {
+    color: #ffffff !important;
+  }
+
+  #mod-indicator.pudding-mod-theme a,
+  #mod-selector-dialogue-container.pudding-mod-theme a,
+  #start-message-dialogue-container.pudding-mod-theme a,
+  #try-gsm-dialogue-container.pudding-mod-theme a {
+    color: var(--mod-loader-link-font-col) !important;
+  }
+
+  /*Solid buttons like PuddingMod's bootstrap .btn*/
+  #mod-indicator.pudding-mod-theme .mod-sel-btn,
+  #mod-selector-dialogue-container.pudding-mod-theme .mod-sel-btn,
+  #start-message-dialogue-container.pudding-mod-theme .mod-sel-btn,
+  #try-gsm-dialogue-container.pudding-mod-theme .mod-sel-btn {
+    background-color: var(--mod-loader-pudding-btn-bg, #1155CC) !important;
+    border: 1px solid transparent !important;
+    color: #ffffff !important;
+    border-radius: 0.375rem !important;
+    font-family: Roboto, Arial, sans-serif !important;
+    font-weight: 400 !important;
+    padding: 0.375rem 0.75rem !important;
+    filter: none;
+  }
+
+  #mod-indicator.pudding-mod-theme .mod-sel-btn:hover,
+  #mod-selector-dialogue-container.pudding-mod-theme .mod-sel-btn:hover,
+  #start-message-dialogue-container.pudding-mod-theme .mod-sel-btn:hover,
+  #try-gsm-dialogue-container.pudding-mod-theme .mod-sel-btn:hover {
+    filter: brightness(1.08);
+    background-color: var(--mod-loader-pudding-btn-bg, #1155CC) !important;
+  }
+
+  #mod-indicator.pudding-mod-theme .mod-sel-btn:active,
+  #mod-selector-dialogue-container.pudding-mod-theme .mod-sel-btn:active,
+  #start-message-dialogue-container.pudding-mod-theme .mod-sel-btn:active,
+  #try-gsm-dialogue-container.pudding-mod-theme .mod-sel-btn:active {
+    filter: brightness(0.92);
+    background-color: var(--mod-loader-pudding-btn-bg, #1155CC) !important;
+  }
+
+  /*Text boxes / selects like PuddingMod .form-control*/
+  #mod-indicator.pudding-mod-theme input[type="text"],
+  #mod-indicator.pudding-mod-theme input[type="url"],
+  #mod-indicator.pudding-mod-theme select,
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="text"],
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="url"],
+  #mod-selector-dialogue-container.pudding-mod-theme select,
+  #start-message-dialogue-container.pudding-mod-theme input[type="text"],
+  #start-message-dialogue-container.pudding-mod-theme input[type="url"],
+  #start-message-dialogue-container.pudding-mod-theme select,
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="text"],
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="url"],
+  #try-gsm-dialogue-container.pudding-mod-theme select {
+    display: inline-block;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1;
+    color: #212529;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 0.375rem;
+    font-family: Roboto, Arial, sans-serif;
+    box-sizing: border-box;
+  }
+
+  /*Bootstrap-style radios/checkboxes (from PuddingMod bootstrap-stripped.css)*/
+  #mod-indicator.pudding-mod-theme input[type="radio"],
+  #mod-indicator.pudding-mod-theme input[type="checkbox"],
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="radio"],
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="checkbox"],
+  #start-message-dialogue-container.pudding-mod-theme input[type="radio"],
+  #start-message-dialogue-container.pudding-mod-theme input[type="checkbox"],
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="radio"],
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 1em;
+    height: 1em;
+    margin: 0 0.35em 0 0;
+    vertical-align: -0.1em;
+    background-color: var(--mod-loader-pudding-btn-bg, #1155CC);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    print-color-adjust: exact;
+  }
+
+  #mod-indicator.pudding-mod-theme input[type="checkbox"],
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="checkbox"],
+  #start-message-dialogue-container.pudding-mod-theme input[type="checkbox"],
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="checkbox"] {
+    border-radius: 0.25em;
+  }
+
+  #mod-indicator.pudding-mod-theme input[type="radio"],
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="radio"],
+  #start-message-dialogue-container.pudding-mod-theme input[type="radio"],
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="radio"] {
+    border-radius: 50%;
+  }
+
+  #mod-indicator.pudding-mod-theme input[type="radio"]:checked,
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="radio"]:checked,
+  #start-message-dialogue-container.pudding-mod-theme input[type="radio"]:checked,
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="radio"]:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+  }
+
+  #mod-indicator.pudding-mod-theme input[type="checkbox"]:checked,
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="checkbox"]:checked,
+  #start-message-dialogue-container.pudding-mod-theme input[type="checkbox"]:checked,
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+  }
+
+  #mod-indicator.pudding-mod-theme input[type="radio"]:focus,
+  #mod-indicator.pudding-mod-theme input[type="checkbox"]:focus,
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="radio"]:focus,
+  #mod-selector-dialogue-container.pudding-mod-theme input[type="checkbox"]:focus,
+  #start-message-dialogue-container.pudding-mod-theme input[type="radio"]:focus,
+  #start-message-dialogue-container.pudding-mod-theme input[type="checkbox"]:focus,
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="radio"]:focus,
+  #try-gsm-dialogue-container.pudding-mod-theme input[type="checkbox"]:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+
+  /*Force native controls when pudding mod loader theme is off — also blocks PuddingMod's
+    globally-injected bootstrap-stripped.css from restyling the modloader.*/
+  #mod-indicator:not(.pudding-mod-theme) input[type="radio"],
+  #mod-indicator:not(.pudding-mod-theme) input[type="checkbox"],
+  #mod-selector-dialogue-container:not(.pudding-mod-theme) input[type="radio"],
+  #mod-selector-dialogue-container:not(.pudding-mod-theme) input[type="checkbox"],
+  #start-message-dialogue-container:not(.pudding-mod-theme) input[type="radio"],
+  #start-message-dialogue-container:not(.pudding-mod-theme) input[type="checkbox"],
+  #try-gsm-dialogue-container:not(.pudding-mod-theme) input[type="radio"],
+  #try-gsm-dialogue-container:not(.pudding-mod-theme) input[type="checkbox"] {
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    appearance: auto !important;
+    width: auto !important;
+    height: auto !important;
+    margin: revert !important;
+    vertical-align: baseline !important;
+    background: revert !important;
+    background-image: none !important;
+    border: revert !important;
+    border-radius: revert !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+
+  #mod-indicator:not(.pudding-mod-theme) input[type="text"],
+  #mod-indicator:not(.pudding-mod-theme) input[type="url"],
+  #mod-indicator:not(.pudding-mod-theme) select,
+  #mod-selector-dialogue-container:not(.pudding-mod-theme) input[type="text"],
+  #mod-selector-dialogue-container:not(.pudding-mod-theme) input[type="url"],
+  #mod-selector-dialogue-container:not(.pudding-mod-theme) select,
+  #start-message-dialogue-container:not(.pudding-mod-theme) input[type="text"],
+  #start-message-dialogue-container:not(.pudding-mod-theme) input[type="url"],
+  #start-message-dialogue-container:not(.pudding-mod-theme) select,
+  #try-gsm-dialogue-container:not(.pudding-mod-theme) input[type="text"],
+  #try-gsm-dialogue-container:not(.pudding-mod-theme) input[type="url"],
+  #try-gsm-dialogue-container:not(.pudding-mod-theme) select {
+    padding: revert;
+    font-size: revert;
+    line-height: revert;
+    color: revert;
+    background-color: revert;
+    border: revert;
+    border-radius: revert;
+    font-family: revert;
+    appearance: auto;
+  }
+
   .start-hidden {
     display: none;
   }
@@ -722,7 +906,7 @@ let addModSelectorPopup = function() {
   <div id="mod-selector-dialogue" style="display: block;margin:25px auto;padding:10px;border: 1px solid var(--mod-loader-thin-border);width:550px;background-color: var(--mod-loader-main-bg) !important;border-radius:5px;-webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.24);box-shadow: 0px 0px 10px 1px rgb(0 0 0 / 20%);font-family: helvetica, sans-serif;max-width: calc(100vw - 35px);overflow-y: auto;max-height: calc(100vh - 110px);">
     <div id="mod-loader-title" style="display: flex;justify-content: space-between;align-items: center;margin: 0px 0px 15px 0px;border: 2px solid var(--mod-loader-title-border);background-color: var(--mod-loader-title-bg);border-radius: 2px;">
       <span><a target="_blank" href="https://github.com/DarkSnakeGang"><img title="DarkSnakeGang github" style="margin-left:3px; margin-top:2px" src="https://www.google.com/logos/fnbx/snake_arcade/v3/speed_00.png" alt="" height="34"></a></span>
-      <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;text-align: center;color: #4674e9;margin-top: 0;margin-bottom: 0;">Snake Mod Loader</h1>
+      <h1 style="font-size: 2em;font-weight: bold;font-family: &quot;Century Gothic&quot;, sans-serif;text-align: center;color: var(--mod-loader-heading-col, #4674e9);margin-top: 0;margin-bottom: 0;">Snake Mod Loader</h1>
       <span><a target="_blank" href="https://discord.gg/NA6vHg62An"><img title="Discord server" src="${WEB_VERSION ? "/img/Discord.png" : "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeIcons/main/Extras/Discord.png"}" width="35px" style="margin-left: 3px; margin-right: 5px; position: relative; top: 2px;"></a></span>
     </div>
     ${gsmPromo}
@@ -746,6 +930,7 @@ let addModSelectorPopup = function() {
           <label style="color:var(--mod-loader-font-col) !important"><input id="hide-indicator" type="checkbox">Auto-hide mod indicator (h to toggle)</label><br>
           <!--<label style="color:var(--mod-loader-font-col) !important"><input id="hidden-mod-toggle" type="checkbox">Show early access mods</label><br>-->
           <label style="color:var(--mod-loader-font-col) !important"><input id="dark-mod-theme" type="checkbox">Dark mod loader theme</label><br>
+          <label style="color:var(--mod-loader-font-col) !important"><input id="pudding-mod-theme" type="checkbox">Pudding mod loader theme</label><br>
           ${mobileOption}
           ${gsmLink}
           ${customUrlOptions}
@@ -803,7 +988,9 @@ let addModSelectorPopup = function() {
   let modSelectorModalContainer = document.createElement('div');
   modSelectorModalContainer.innerHTML = modSelectorModal;
   modSelectorModalContainer.id = 'mod-selector-dialogue-container';
-  modSelectorModalContainer.style = 'display:none; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0';
+  //First visit (nothing in snakeAdvancedSettings yet) should open the change-mod menu
+  let isFirstModLoaderVisit = localStorage.getItem('snakeAdvancedSettings') === null;
+  modSelectorModalContainer.style = `${isFirstModLoaderVisit ? 'display:block' : 'display:none'}; position:fixed; width:100%; height:100%; z-index: 999999; left:0; top:0`;
   document.body.appendChild(modSelectorModalContainer);
 
   showUpdateLinkIfNeeded();
@@ -945,6 +1132,9 @@ let addModSelectorPopup = function() {
   document.getElementById('dark-mod-theme').addEventListener('change', function() {
     updateAdvancedSetting('darkModTheme', this.checked);
   });
+  document.getElementById('pudding-mod-theme').addEventListener('change', function() {
+    updateAdvancedSetting('puddingModTheme', this.checked);
+  });
   if(WEB_VERSION) {
     document.getElementById('use-mobile-website').addEventListener('change', function() {
       updateAdvancedSetting('useMobileWebsite', this.value);
@@ -994,6 +1184,10 @@ let addModSelectorPopup = function() {
 
   //Hide mod selector dialogue when clicking close button
   document.getElementById('close-mod-selector').addEventListener('click', function() {
+    //Persisting {} here means the first-run auto-open won't keep firing after they dismiss it
+    if(localStorage.getItem('snakeAdvancedSettings') === null) {
+      localStorage.setItem('snakeAdvancedSettings', JSON.stringify(advancedSettings));
+    }
     document.getElementById('mod-selector-dialogue-container').style.display = 'none';
   });
 
@@ -1021,6 +1215,12 @@ let addModSelectorPopup = function() {
 
     //Skip if settings/mod chosen are the same as before.
     if(shallowEquality && newlySelectedMod === currentlySelectedMod && !gameVersionChanged) {
+      //First visit still needs a save so the menu doesn't auto-open forever
+      if(localStorage.getItem('snakeAdvancedSettings') === null) {
+        localStorage.setItem('snakeAdvancedSettings', JSON.stringify(advancedSettings));
+        document.getElementById('mod-selector-dialogue-container').style.display = 'none';
+        return;
+      }
       alert('Settings are the same as before!')
       return;
     }
@@ -1042,14 +1242,8 @@ let addModSelectorPopup = function() {
       ) {
       location.reload();
     } else {
-      //Apply dark mod theme setting if toggled.
-      if(advancedSettings.darkModTheme) {
-        document.getElementById('mod-indicator').classList.add('dark-mod-theme');
-        document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
-      } else {
-        document.getElementById('mod-indicator').classList.remove('dark-mod-theme');
-        document.getElementById('mod-selector-dialogue-container').classList.remove('dark-mod-theme');
-      }
+      //Apply dark/pudding mod theme setting if toggled.
+      applyModLoaderThemeClasses();
 
       //Apply background colour on fbx
       //web snake
@@ -1111,6 +1305,252 @@ let addModSelectorPopup = function() {
     }
   });
 
+  //Default Sun from DarkSnakeGang/GoogleSnakePudding Libraries/Theme.js — used until setTheme runs
+  const PUDDING_DEFAULT_SUN_THEME = {
+    name: 'Default Sun',
+    light_tiles: '#aad751',
+    dark_tiles: '#a2d149',
+    shadow: '#94bd46',
+    border: '#578a34',
+    key_block_sign_color: '#38640e',
+    real_top_bar: '#4a752c',
+    endscreen_background: '#4dc1f9',
+    sep_color: '#7eccfa',
+    topbar_color: '#3a91bb',
+    buttons_color: '#1155CC',
+    bg_color: '#4dc1f9',
+    bottom_color: '#4dc1f9'
+  };
+
+  //True Dark ("dark-night") — used as the pudding fallback when dark mod loader theme is also on
+  const PUDDING_TRUE_DARK_THEME = {
+    name: 'True Dark',
+    light_tiles: '#1D1D1D',
+    dark_tiles: '#161616',
+    shadow: '#111111',
+    border: '#000000',
+    key_block_sign_color: '#1D1D1D',
+    real_top_bar: '#111111',
+    endscreen_background: '#000000',
+    sep_color: '#212121',
+    topbar_color: '#000000',
+    buttons_color: '#000000',
+    bg_color: '#111111',
+    bottom_color: '#111111'
+  };
+
+  function getPuddingFallbackTheme() {
+    return advancedSettings.darkModTheme ? PUDDING_TRUE_DARK_THEME : PUDDING_DEFAULT_SUN_THEME;
+  }
+
+  function getPuddingFallbackThemeName() {
+    return getPuddingFallbackTheme().name;
+  }
+
+  const PUDDING_MOD_LOADER_CSS_VARS = [
+    '--mod-loader-font-col',
+    '--mod-loader-heading-col',
+    '--mod-loader-main-bg',
+    '--mod-loader-title-bg',
+    '--mod-loader-title-border',
+    '--mod-loader-thin-border',
+    '--mod-loader-indicator-display-bg',
+    '--mod-loader-link-font-col',
+    '--mod-loader-button-bg',
+    '--mod-loader-button-close-col',
+    '--mod-loader-button-apply-col',
+    '--mod-loader-button-settings-col',
+    '--mod-loader-button-hover',
+    '--mod-loader-desc-mobile-bg',
+    '--mod-loader-pudding-btn-bg'
+  ];
+
+  function getModLoaderThemeTargets() {
+    return [
+      document.getElementById('mod-indicator'),
+      document.getElementById('mod-selector-dialogue-container'),
+      document.getElementById('start-message-dialogue-container'),
+      document.getElementById('try-gsm-dialogue-container')
+    ].filter(Boolean);
+  }
+
+  function hexToRgb(hex) {
+    if(typeof hex !== 'string') {return null;}
+    let cleaned = hex.replace('#', '');
+    if(cleaned.length === 3) {
+      cleaned = cleaned.split('').map(c => c + c).join('');
+    }
+    if(!/^[0-9a-fA-F]{6}$/.test(cleaned)) {return null;}
+    return {
+      r: parseInt(cleaned.slice(0, 2), 16),
+      g: parseInt(cleaned.slice(2, 4), 16),
+      b: parseInt(cleaned.slice(4, 6), 16)
+    };
+  }
+
+  //Relative luminance so light pudding themes (Snow/Pudding yellow) get dark text
+  function getContrastFontColor(bgHex) {
+    let rgb = hexToRgb(bgHex);
+    if(!rgb) {return '#ffffff';}
+    let luminance = (0.2126 * rgb.r + 0.7152 * rgb.g + 0.0722 * rgb.b) / 255;
+    return luminance > 0.55 ? '#000000' : '#ffffff';
+  }
+
+  function lightenHex(hex, amount) {
+    let rgb = hexToRgb(hex);
+    if(!rgb) {return hex;}
+    let mix = (channel) => Math.min(255, Math.round(channel + (255 - channel) * amount));
+    return '#' + [mix(rgb.r), mix(rgb.g), mix(rgb.b)].map(v => v.toString(16).padStart(2, '0')).join('');
+  }
+
+  function darkenHex(hex, amount) {
+    let rgb = hexToRgb(hex);
+    if(!rgb) {return hex;}
+    let mix = (channel) => Math.max(0, Math.round(channel * (1 - amount)));
+    return '#' + [mix(rgb.r), mix(rgb.g), mix(rgb.b)].map(v => v.toString(16).padStart(2, '0')).join('');
+  }
+
+  function getPuddingThemeByName(themeName) {
+    if(Array.isArray(window.themes)) {
+      let match = window.themes.find(theme => theme && theme.name === themeName);
+      if(match) {return match;}
+    }
+    if(themeName === 'True Dark' || themeName === 'dark-night') {
+      return PUDDING_TRUE_DARK_THEME;
+    }
+    if(themeName === 'Default Sun') {
+      return PUDDING_DEFAULT_SUN_THEME;
+    }
+    if(!themeName) {
+      return getPuddingFallbackTheme();
+    }
+    return null;
+  }
+
+  function buildPuddingModLoaderVars(theme) {
+    let fallback = getPuddingFallbackTheme();
+    let mainBg = theme.real_top_bar || theme.bg_color || fallback.real_top_bar;
+    //Same source PuddingMod uses for .btn / .form-check-input backgrounds
+    let buttons = theme.buttons_color || window.button_color || fallback.buttons_color;
+    let titleBg = theme.border || theme.topbar_color || darkenHex(mainBg, 0.15);
+    let font = getContrastFontColor(mainBg);
+
+    return {
+      '--mod-loader-font-col': font,
+      //Title is always white on pudding panels (matches SpeedInfo/settings headings)
+      '--mod-loader-heading-col': '#ffffff',
+      '--mod-loader-main-bg': mainBg,
+      '--mod-loader-title-bg': titleBg,
+      '--mod-loader-title-border': darkenHex(titleBg, 0.12),
+      '--mod-loader-thin-border': 'rgba(255, 255, 255, 0.22)',
+      '--mod-loader-indicator-display-bg': darkenHex(mainBg, 0.18),
+      //SpeedInfo WR links use this exact light-blue
+      '--mod-loader-link-font-col': '#ADD8E6',
+      '--mod-loader-button-bg': buttons,
+      '--mod-loader-button-close-col': '#ffffff',
+      '--mod-loader-button-apply-col': '#ffffff',
+      '--mod-loader-button-settings-col': '#ffffff',
+      '--mod-loader-button-hover': lightenHex(buttons, 0.12),
+      '--mod-loader-desc-mobile-bg': darkenHex(mainBg, 0.1),
+      '--mod-loader-pudding-btn-bg': buttons
+    };
+  }
+
+  function clearPuddingModLoaderTheme() {
+    getModLoaderThemeTargets().forEach(el => {
+      el.classList.remove('pudding-mod-theme');
+      PUDDING_MOD_LOADER_CSS_VARS.forEach(cssVar => el.style.removeProperty(cssVar));
+      //In case anything copied PuddingMod bootstrap classes onto modloader controls
+      el.querySelectorAll('.form-check-input, .form-check-label, .form-control, .btn').forEach(node => {
+        node.classList.remove('form-check-input', 'form-check-label', 'form-control', 'btn');
+      });
+    });
+  }
+
+  function applyPuddingModLoaderTheme(themeName, fromGame) {
+    if(!advancedSettings.puddingModTheme) {
+      clearPuddingModLoaderTheme();
+      return;
+    }
+
+    if(fromGame) {
+      window.__puddingModLoaderThemeFromGame = true;
+    }
+
+    let fallback = getPuddingFallbackTheme();
+    let theme = getPuddingThemeByName(themeName) || fallback;
+    let cssVars = buildPuddingModLoaderVars(theme);
+    window.__puddingModLoaderLastThemeName = theme.name || themeName || fallback.name;
+
+    getModLoaderThemeTargets().forEach(el => {
+      //Pudding styling wins over the static dark theme while this option is on
+      el.classList.remove('dark-mod-theme');
+      el.classList.add('pudding-mod-theme');
+      Object.keys(cssVars).forEach(cssVar => el.style.setProperty(cssVar, cssVars[cssVar]));
+    });
+  }
+
+  function hookPuddingSetTheme() {
+    if(typeof window.setTheme !== 'function' || window.setTheme.__puddingModLoaderHooked) {
+      return typeof window.setTheme === 'function';
+    }
+
+    let originalSetTheme = window.setTheme;
+    window.setTheme = function(themeName) {
+      let result = originalSetTheme.apply(this, arguments);
+      if(advancedSettings.puddingModTheme) {
+        applyPuddingModLoaderTheme(themeName, true);
+      }
+      return result;
+    };
+    window.setTheme.__puddingModLoaderHooked = true;
+    return true;
+  }
+
+  //PuddingMod defines setTheme after the snake bundle is altered — keep trying briefly
+  function ensurePuddingSetThemeHook(attemptsLeft) {
+    if(!advancedSettings.puddingModTheme) {return;}
+    if(hookPuddingSetTheme()) {return;}
+    if(attemptsLeft <= 0) {return;}
+    setTimeout(function() {
+      ensurePuddingSetThemeHook(attemptsLeft - 1);
+    }, 400);
+  }
+
+  function resolvePuddingModLoaderThemeName() {
+    //In-game theme selection wins; otherwise pudding-only → Default Sun, pudding+dark → True Dark
+    if(window.__puddingModLoaderThemeFromGame && window.__puddingModLoaderLastThemeName) {
+      return window.__puddingModLoaderLastThemeName;
+    }
+    return getPuddingFallbackThemeName();
+  }
+
+  function applyModLoaderThemeClasses() {
+    let targets = getModLoaderThemeTargets();
+
+    if(advancedSettings.puddingModTheme) {
+      applyPuddingModLoaderTheme(resolvePuddingModLoaderThemeName());
+      ensurePuddingSetThemeHook(25);
+      return;
+    }
+
+    clearPuddingModLoaderTheme();
+    window.__puddingModLoaderThemeFromGame = false;
+
+    targets.forEach(el => {
+      if(advancedSettings.darkModTheme) {
+        el.classList.add('dark-mod-theme');
+      } else {
+        el.classList.remove('dark-mod-theme');
+      }
+    });
+  }
+
+  //So popups created outside this scope (try-gsm) can still pick up the pudding theme
+  window.webSnake = window.webSnake ?? {};
+  window.webSnake.applyPuddingModLoaderTheme = applyPuddingModLoaderTheme;
+  window.webSnake.clearPuddingModLoaderTheme = clearPuddingModLoaderTheme;
+
   function updateAdvancedSettingInputs() {
     if(advancedSettings.hasOwnProperty('fullscreenStartsOn')) {
       document.getElementById('fullscreen-at-start').checked = advancedSettings.fullscreenStartsOn;
@@ -1126,6 +1566,9 @@ let addModSelectorPopup = function() {
     }
     if(advancedSettings.hasOwnProperty('darkModTheme')) {
       document.getElementById('dark-mod-theme').checked = advancedSettings.darkModTheme;
+    }
+    if(advancedSettings.hasOwnProperty('puddingModTheme')) {
+      document.getElementById('pudding-mod-theme').checked = advancedSettings.puddingModTheme;
     }
     if(WEB_VERSION && advancedSettings.hasOwnProperty('useMobileWebsite')) {
       document.getElementById('use-mobile-website').value = advancedSettings.useMobileWebsite;
@@ -1224,10 +1667,7 @@ let addModSelectorPopup = function() {
     if(advancedSettings.showHiddenMods) {
       [...document.getElementsByClassName('start-hidden')].forEach(el=>el.classList.add('show-hidden'));
     }
-    if(advancedSettings.darkModTheme) {
-      document.getElementById('mod-indicator').classList.add('dark-mod-theme');
-      document.getElementById('mod-selector-dialogue-container').classList.add('dark-mod-theme');
-    }
+    applyModLoaderThemeClasses();
     if(advancedSettings.hideIndicator) {
       setTimeout(function() {
         if(window.showSnakeErrMessage) {return;}
@@ -1427,7 +1867,9 @@ let addModSelectorPopup = function() {
 
     document.getElementById('start-message-explanatory-text').textContent = modInfo.startMessage.explanatoryText;
 
-    if(advancedSettings && advancedSettings.darkModTheme) {
+    if(advancedSettings && advancedSettings.puddingModTheme) {
+      applyPuddingModLoaderTheme(resolvePuddingModLoaderThemeName());
+    } else if(advancedSettings && advancedSettings.darkModTheme) {
       document.getElementById('start-message-dialogue-container').classList.add('dark-mod-theme');
     }
 
@@ -1512,9 +1954,14 @@ function showErrorTryGsmPopup() {
   tryGsmModalContainer.style = 'position:fixed; width:100%; height:100%; z-index: 10000000; left:0; top:0';
   document.body.appendChild(tryGsmModalContainer);
 
-  //Dark theme - lazy code to grab advanced settings again
+  //Dark/pudding theme - lazy code to grab advanced settings again
   let advancedSettings = JSON.parse(localStorage.getItem('snakeAdvancedSettings')) ?? {};
-  if(advancedSettings && advancedSettings.darkModTheme) {
+  if(advancedSettings && advancedSettings.puddingModTheme && window.webSnake && typeof window.webSnake.applyPuddingModLoaderTheme === 'function') {
+    let puddingThemeName = (window.__puddingModLoaderThemeFromGame && window.__puddingModLoaderLastThemeName)
+      ? window.__puddingModLoaderLastThemeName
+      : (advancedSettings.darkModTheme ? 'True Dark' : 'Default Sun');
+    window.webSnake.applyPuddingModLoaderTheme(puddingThemeName);
+  } else if(advancedSettings && advancedSettings.darkModTheme) {
     document.getElementById('try-gsm-dialogue-container').classList.add('dark-mod-theme');
   }
 
