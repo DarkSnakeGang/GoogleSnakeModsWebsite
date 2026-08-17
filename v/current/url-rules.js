@@ -121,19 +121,40 @@
       return request;
     };
 
+    window.webSnake.isSnakeBundleUrl = function(url) {
+      if (!url || typeof url !== "string" || url.indexOf("blob:") === 0) return false;
+      var rewritten = window.webSnake.rewriteUrl(url);
+      if (rewritten && rewritten.indexOf("snake.js") !== -1 && rewritten.indexOf("/xjs/") === -1) return true;
+      return url.indexOf("xjs=s3") !== -1 && url.indexOf("pKhWu") !== -1;
+    };
+
     var nativeAppendChild = Node.prototype.appendChild;
     Node.prototype.appendChild = function(el) {
       if (el && el.tagName === "SCRIPT") {
-        if (el.src) {
-          var rewritten = window.webSnake.rewriteUrl(el.src);
-          if (rewritten !== el.src) el.src = rewritten;
-        } else {
+        if (el.src && el.src.indexOf("blob:") !== 0) {
+          var originalSrc = el.src;
+          var rewritten = window.webSnake.rewriteUrl(originalSrc);
+          var modName = localStorage.getItem("snakeChosenMod") || "none";
+          var isSnake = window.webSnake.isSnakeBundleUrl(originalSrc) || window.webSnake.isSnakeBundleUrl(rewritten);
+          if (isSnake && modName && modName !== "none") {
+            try {
+              var xhr = new XMLHttpRequest();
+              xhr.open("GET", rewritten.indexOf("snake.js") !== -1 ? rewritten : "snake.js", false);
+              xhr.send();
+              var code = window.webSnake.applySelectedMod(xhr.responseText || "");
+              el.src = URL.createObjectURL(new Blob([code], { type: "application/javascript" }));
+            } catch (err) {
+              console.error(err);
+              if (rewritten !== originalSrc) el.src = rewritten;
+            }
+          } else if (rewritten !== originalSrc) {
+            el.src = rewritten;
+          }
+        } else if (!el.src) {
           var source = el.text || el.textContent || "";
           if (source) {
             var modded = window.webSnake.applySelectedMod(source);
-            if (modded !== source) {
-              el.textContent = modded;
-            }
+            if (modded !== source) el.textContent = modded;
           }
         }
       }
