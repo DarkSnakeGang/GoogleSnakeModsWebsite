@@ -12,4 +12,132 @@
   window.webSnake.blockedUrls = [
   "https://www.google.com/xjs/_/js/k=xjs.s.en.1gGYAjfJB_o.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEAABABIAIAAAAAIAAAAAAAAAAAAAAAAACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEAAgACQAAAAAAAAAAAIAgAAAAAAAgAAAAAAAAAGABAAQACEAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAQBAAAABEIAACAADA3-YbAAAaAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAwAIAAAACAwAACAABARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAoAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAUAAAAAAAAOAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAABDAAAAAAAAAAAAAAAAACPwAIgAAAAAAAAAQAAAAAAAAABEAAAAAAAAAAQAAEADAAAAAAcgA8HgBDBAUAAAAAAAAAAAAAAAAAAAAAAAAAAARAAcyBJCAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIjwFAAAAAADA1gCA/dg=0/ichc=1/rs=ACT90oEofofHF42UI7JaTooPoddXe-FC4g/cb=loaded_h_0?cb=121509378"
 ];
-  
+
+  window.webSnake.xjsFingerprint = function(url) {
+    if (typeof url !== "string") return null;
+    var moduleList = url.match(/\/m=([^\/?#]+)/);
+    if (!moduleList) return null;
+    var xjsParam = url.match(/[?&]xjs=([^&#]*)/);
+    return "m=" + moduleList[1] + "&xjs=" + (xjsParam ? xjsParam[1] : "");
+  };
+
+  window.webSnake.rewriteUrl = function(url) {
+    if (url == null) return url;
+    if (typeof url !== "string") {
+      if (typeof URL !== "undefined" && url instanceof URL) url = url.href;
+      else if (url && typeof url.url === "string") url = url.url;
+      else url = String(url);
+    }
+    var map = window.webSnake.urlMap || [];
+    var i;
+    for (i = 0; i < map.length; i++) {
+      if (url === map[i].oldUrl) return map[i].newUrl;
+    }
+    if (url.indexOf("snake.js") !== -1 && url.indexOf("/xjs/") === -1) return url;
+    if (url.indexOf("/xjs/_/js/") === -1) return url;
+    var fingerprint = window.webSnake.xjsFingerprint(url);
+    if (fingerprint) {
+      for (i = 0; i < map.length; i++) {
+        if (window.webSnake.xjsFingerprint(map[i].oldUrl) === fingerprint && map[i].newUrl) {
+          return map[i].newUrl;
+        }
+      }
+    }
+    if (url.indexOf("xjs=s3") !== -1 && url.indexOf("pKhWu") !== -1) {
+      for (i = 0; i < map.length; i++) {
+        if (map[i].newUrl && map[i].newUrl.indexOf("snake.js") !== -1) return map[i].newUrl;
+      }
+      return "snake.js";
+    }
+    return url;
+  };
+
+  window.webSnake.looksLikeSnakeJs = function(code) {
+    return typeof code === "string" &&
+      code.indexOf("trophy") !== -1 &&
+      code.indexOf("apple") !== -1 &&
+      code.indexOf("snake_arcade") !== -1;
+  };
+
+  window.webSnake.applySelectedMod = function(code) {
+    if (!window.webSnake.looksLikeSnakeJs(code) || window.webSnake._modsApplied) return code;
+    var modName = localStorage.getItem("snakeChosenMod") || "none";
+    if (!modName || modName === "none") return code;
+    var mod = window[modName];
+    if (!mod) {
+      console.warn("Selected mod is not loaded:", modName);
+      return code;
+    }
+    window.webSnake._modsApplied = true;
+    window.hasFoundSnakeCodeYet = true;
+    var msg = document.getElementById("code-not-found-message");
+    if (msg) msg.style.display = "none";
+    if (mod.runCodeBefore) {
+      try { mod.runCodeBefore(); } catch (err) { console.error(err); }
+    }
+    if (mod.alterSnakeCode) {
+      try { code = mod.alterSnakeCode(code); } catch (err) {
+        console.error(err);
+        return code;
+      }
+    }
+    if (mod.runCodeAfter) {
+      code += ";\nvoid (function(){try{window[" + JSON.stringify(modName) + "].runCodeAfter()}catch(e){console.error(e)}})();";
+    }
+    console.log("Applied mod to snake.js:", modName);
+    return code;
+  };
+
+  // Keep natives in a closure. snake-web-initial.js assigns window.oldXhrOpen /
+  // window.oldFetch, and a top-level `var oldXhrOpen` is the same binding.
+  (function() {
+    var nativeXhrOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+      if (arguments.length > 1) arguments[1] = window.webSnake.rewriteUrl(arguments[1]);
+      return nativeXhrOpen.apply(this, arguments);
+    };
+
+    var nativeFetch = window.fetch;
+    window.fetch = function(resource) {
+      var original = typeof resource === "string" ? resource
+        : (typeof URL !== "undefined" && resource instanceof URL) ? resource.href
+        : (resource && resource.url) ? resource.url
+        : resource;
+      var rewritten = window.webSnake.rewriteUrl(original);
+      if (rewritten !== original) arguments[0] = rewritten;
+      var request = nativeFetch.apply(this, arguments);
+      var target = rewritten !== original ? rewritten : original;
+      if (typeof target === "string" && (target.indexOf("snake.js") !== -1 || (target.indexOf("xjs=s3") !== -1 && target.indexOf("pKhWu") !== -1))) {
+        return request.then(function(response) {
+          return response.text().then(function(text) {
+            return new Response(window.webSnake.applySelectedMod(text), {
+              status: response.status,
+              statusText: response.statusText,
+              headers: { "Content-Type": "application/javascript" }
+            });
+          });
+        });
+      }
+      return request;
+    };
+
+    var nativeAppendChild = Node.prototype.appendChild;
+    Node.prototype.appendChild = function(el) {
+      if (el && el.tagName === "SCRIPT") {
+        if (el.src) {
+          var rewritten = window.webSnake.rewriteUrl(el.src);
+          if (rewritten !== el.src) el.src = rewritten;
+        } else {
+          var source = el.text || el.textContent || "";
+          if (source) {
+            var modded = window.webSnake.applySelectedMod(source);
+            if (modded !== source) {
+              el.textContent = modded;
+            }
+          }
+        }
+      }
+      return nativeAppendChild.call(this, el);
+    };
+  })();
+
