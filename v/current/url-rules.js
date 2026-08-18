@@ -59,11 +59,132 @@
       code.indexOf("snake_arcade") !== -1;
   };
 
+  window.webSnake._modInfoCache = null;
+  window.webSnake._modInfoUrl =
+    "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeModLoader/main/build/mod-info.json";
+
+  window.webSnake.getGameVersionFromUrl = function() {
+    var href = window.location.href;
+    if (href.indexOf("v/current") !== -1) {
+      return typeof window.webLatestVersion === "number" ? window.webLatestVersion : 13;
+    }
+    var match = href.match(/v\/(\d+)/);
+    return match ? parseInt(match[1], 10) : 13;
+  };
+
+  window.webSnake.resolveModObjectName = function(modName, modConfig) {
+    if (localStorage.getItem("snakeForceDevMode") === "true" && modConfig && modConfig.customModName) {
+      return modConfig.customModName;
+    }
+    return modName;
+  };
+
+  window.webSnake.redirectToGameVersion = function(gameVersion) {
+    var latest = typeof window.webLatestVersion === "number" ? window.webLatestVersion : 13;
+    if (gameVersion === latest) {
+      window.location.href = "../../v/current/";
+    } else {
+      window.location.href = "../../v/" + gameVersion + "/";
+    }
+  };
+
+  window.webSnake.getSelectedModConfig = function(modName) {
+    if (!modName || modName === "none" || !window.webSnake._modInfoCache) {
+      return null;
+    }
+    var modsConfig = window.webSnake._modInfoCache.modsConfig;
+    return modsConfig && modsConfig[modName] ? modsConfig[modName] : null;
+  };
+
+  window.webSnake.ensureSelectedModLoaded = function(modName) {
+    if (!modName || modName === "none") {
+      return false;
+    }
+
+    if (!window.webSnake._modInfoCache) {
+      var infoReq = new XMLHttpRequest();
+      infoReq.open("GET", window.webSnake._modInfoUrl, false);
+      infoReq.send();
+      if (infoReq.status !== 200) {
+        return false;
+      }
+      try {
+        window.webSnake._modInfoCache = JSON.parse(infoReq.responseText);
+      } catch (err) {
+        console.error(err);
+        return false;
+      }
+    }
+
+    var modsConfig = window.webSnake._modInfoCache.modsConfig;
+    if (!modsConfig || !modsConfig[modName]) {
+      return false;
+    }
+
+    var modConfig = modsConfig[modName];
+    var objectName = window.webSnake.resolveModObjectName(modName, modConfig);
+    if (window[objectName]) {
+      return true;
+    }
+
+    if (window.isSnakeMobileVersion && modConfig.mobile && modConfig.mobile.support === false) {
+      console.warn("Mod " + modName + " does not support mobile");
+      return false;
+    }
+
+    if (!modConfig.hasUrl) {
+      return !!window[objectName];
+    }
+
+    var modUrl = modConfig.url;
+    if (Array.isArray(modConfig.web) && modConfig.web.length > 0) {
+      var gameVersion = window.webSnake.getGameVersionFromUrl();
+      var webEntry = null;
+      for (var i = 0; i < modConfig.web.length; i++) {
+        if (modConfig.web[i].version === gameVersion) {
+          webEntry = modConfig.web[i];
+          break;
+        }
+      }
+      if (!webEntry) {
+        var supportedVersions = modConfig.web.map(function(entry) { return entry.version; });
+        var latestSupported = Math.max.apply(null, supportedVersions);
+        console.warn(
+          "Mod " + modName + " does not support game version " + gameVersion +
+          ". Redirecting to version " + latestSupported + "."
+        );
+        window.webSnake.redirectToGameVersion(latestSupported);
+        return false;
+      }
+      modUrl = webEntry.url;
+    }
+
+    console.log("Preloading selected mod: " + modName + " from " + modUrl);
+    var modReq = new XMLHttpRequest();
+    modReq.open("GET", modUrl, false);
+    modReq.send();
+    if (modReq.status !== 200) {
+      console.log("Loading selected mod returned non-200 status. Received: " + modReq.status);
+      return false;
+    }
+
+    (0, eval)(modReq.responseText);
+    return !!window[objectName];
+  };
+
   window.webSnake.applySelectedMod = function(code) {
     if (!window.webSnake.looksLikeSnakeJs(code) || window.webSnake._modsApplied) return code;
     var modName = localStorage.getItem("snakeChosenMod") || "none";
     if (!modName || modName === "none") return code;
-    var mod = window[modName];
+    var modConfig = window.webSnake.getSelectedModConfig(modName);
+    var objectName = window.webSnake.resolveModObjectName(modName, modConfig || {});
+    var mod = window[objectName];
+    if (!mod) {
+      window.webSnake.ensureSelectedModLoaded(modName);
+      modConfig = window.webSnake.getSelectedModConfig(modName);
+      objectName = window.webSnake.resolveModObjectName(modName, modConfig || {});
+      mod = window[objectName];
+    }
     if (!mod) {
       console.warn("Selected mod is not loaded:", modName);
       return code;
@@ -82,7 +203,7 @@
       }
     }
     if (mod.runCodeAfter) {
-      code += ";\nvoid (function(){try{window[" + JSON.stringify(modName) + "].runCodeAfter()}catch(e){console.error(e)}})();";
+      code += ";\nvoid (function(){try{window[" + JSON.stringify(objectName) + "].runCodeAfter()}catch(e){console.error(e)}})();";
     }
     console.log("Applied mod to snake.js:", modName);
     return code;
@@ -160,5 +281,12 @@
       }
       return nativeAppendChild.call(this, el);
     };
+  })();
+
+  (function preloadSelectedModForUrlRules() {
+    var modName = localStorage.getItem("snakeChosenMod") || "none";
+    if (modName && modName !== "none") {
+      window.webSnake.ensureSelectedModLoaded(modName);
+    }
   })();
 
