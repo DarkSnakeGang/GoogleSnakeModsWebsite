@@ -72,8 +72,34 @@
     return match ? parseInt(match[1], 10) : 13;
   };
 
+  window.webSnake.readAdvancedSettings = function() {
+    try {
+      return JSON.parse(localStorage.getItem("snakeAdvancedSettings") || "{}") || {};
+    } catch (err) {
+      return {};
+    }
+  };
+
+  // customUrl is not in mod-info.json; the picker stores it in Advanced Settings.
+  window.webSnake.injectLocalModConfigs = function() {
+    if (!window.webSnake._modInfoCache || typeof window.webSnake._modInfoCache !== "object") {
+      window.webSnake._modInfoCache = { modsConfig: {} };
+    }
+    if (!window.webSnake._modInfoCache.modsConfig) {
+      window.webSnake._modInfoCache.modsConfig = {};
+    }
+    var advanced = window.webSnake.readAdvancedSettings();
+    window.webSnake._modInfoCache.modsConfig.customUrl = {
+      displayName: "Load from url",
+      customModName: advanced.customModName || "",
+      url: advanced.customUrl || "",
+      hasUrl: true
+    };
+  };
+
   window.webSnake.resolveModObjectName = function(modName, modConfig) {
-    if (localStorage.getItem("snakeForceDevMode") === "true" && modConfig && modConfig.customModName) {
+    if (modConfig && modConfig.customModName &&
+        (modName === "customUrl" || localStorage.getItem("snakeForceDevMode") === "true")) {
       return modConfig.customModName;
     }
     return modName;
@@ -102,21 +128,21 @@
     }
 
     if (!window.webSnake._modInfoCache) {
-      var infoReq = new XMLHttpRequest();
-      infoReq.open("GET", window.webSnake._modInfoUrl, false);
-      infoReq.send();
-      if (infoReq.status !== 200) {
-        return false;
-      }
       try {
-        window.webSnake._modInfoCache = JSON.parse(infoReq.responseText);
+        var infoReq = new XMLHttpRequest();
+        infoReq.open("GET", window.webSnake._modInfoUrl, false);
+        infoReq.send();
+        if (infoReq.status === 200) {
+          window.webSnake._modInfoCache = JSON.parse(infoReq.responseText);
+        }
       } catch (err) {
         console.error(err);
-        return false;
       }
     }
 
-    var modsConfig = window.webSnake._modInfoCache.modsConfig;
+    window.webSnake.injectLocalModConfigs();
+
+    var modsConfig = window.webSnake._modInfoCache && window.webSnake._modInfoCache.modsConfig;
     if (!modsConfig || !modsConfig[modName]) {
       return false;
     }
@@ -136,8 +162,9 @@
       return !!window[objectName];
     }
 
+    var isCustomUrl = modName === "customUrl";
     var modUrl = modConfig.url;
-    if (Array.isArray(modConfig.web) && modConfig.web.length > 0) {
+    if (!isCustomUrl && Array.isArray(modConfig.web) && modConfig.web.length > 0) {
       var gameVersion = window.webSnake.getGameVersionFromUrl();
       var webEntry = null;
       for (var i = 0; i < modConfig.web.length; i++) {
@@ -159,17 +186,37 @@
       modUrl = webEntry.url;
     }
 
-    console.log("Preloading selected mod: " + modName + " from " + modUrl);
-    var modReq = new XMLHttpRequest();
-    modReq.open("GET", modUrl, false);
-    modReq.send();
-    if (modReq.status !== 200) {
-      console.log("Loading selected mod returned non-200 status. Received: " + modReq.status);
+    if (!modUrl || modUrl.indexOf("PLEASE_CHOOSE") === 0) {
+      console.warn("customUrl is selected but Advanced Settings has no URL");
       return false;
     }
 
-    (0, eval)(modReq.responseText);
-    return !!window[objectName];
+    console.log("Preloading selected mod: " + modName +
+      (objectName && objectName !== modName ? " (" + objectName + ")" : "") +
+      " from " + modUrl);
+    try {
+      var modReq = new XMLHttpRequest();
+      modReq.open("GET", modUrl, false);
+      modReq.send();
+      if (modReq.status !== 200) {
+        console.log("Loading selected mod returned non-200 status. Received: " + modReq.status);
+        return false;
+      }
+      (0, eval)(modReq.responseText);
+    } catch (err) {
+      console.error("Failed to load mod from " + modUrl, err);
+      return false;
+    }
+
+    if (!window[objectName]) {
+      console.warn(
+        "Loaded " + modUrl + " but window." + objectName + " is missing. " +
+        "Set Custom Mod Name in Advanced Settings to the global the file assigns " +
+        "(PuddingMod, SpeedrunMod, moreMenu, ...)."
+      );
+      return false;
+    }
+    return true;
   };
 
   window.webSnake.applySelectedMod = function(code) {
