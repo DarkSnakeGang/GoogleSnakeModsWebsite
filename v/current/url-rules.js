@@ -4,13 +4,13 @@
 
   window.webSnake.urlMap = [
   {
-    "oldUrl": "https://www.google.com/xjs/_/js/k=xjs.s.en.1gGYAjfJB_o.2019.O/ck=xjs.s._FEqZKugoRo.L.B1.O/am=AAAIAAAAAAAQAAAAAAAAAAAAAAgQQAQAAAAAAAAAAAAAAAAAAEAIAAQAAEAAAAAAAAAAAAAAAAAAIAAQAAAAAAAEAABDAAAAABgAAACBEAABgBIAIAAAEKIBIgAAAQAAAAAAAAAKPQAEAGAAAAAAAADgARgAjgAAAAAAAAABAAAACEAggACQAAAAAAAAAAAIAgAAAAAAAgAAAAQAAAAGABAAQACUAAAAACoAAAAACAAAAAAIAAAAAAAAAAAARBABAABEIAACAADA3-YbAAAeAAAAAABwAAAAAAAAAAACAAAAAAAAAAAAAABIBA4AAAAAAADCwAIAAAACAwAACAABARAAAAAAAAAAABAJkAAACAAAAADAAAAAAAAAAAAAAQCCEAgAgAAoAAEBAAABgIMHAAgAAAAAAAAAAAAKAAAAAAAACAAAAAAEACAIQAggAAAAAACAAAAAAAUgAAAAACAOAAAAAAAAACCQAkAAAgAYQQIAIFEQCCACAEAABDAAAAAQAQAAAAAAABASPwAIgAAAAAAAAEQAAAAAAACABEAAAAAAgAUAWCAEADAAAAAAcgA8HgBDBAUAAAAAAAAAAAAAAAAAAAAAAAAAAARAAcyBpCAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIjwFAAAAAADA1gCA/d=0/dg=0/br=1/ujg=1/rs=ACT90oHptmHWwb0godGSeROxuX0iwS-Qvg/cb=loaded_h_0/m=syk3,aLUfP,wQlYve,sy9pf,sy4mn,sy4pr,sy9pe,sy9pd,sy5ud,sy30z,sy32x,sy30k,sy9w,sy30l,sy1qz,pKhWu,sy5t9,sy2n4,sy27t,oQfbDd,abd,sy5t3,TDFkye,sy8m2,sy8pk,sy8pi,sy8m5,sy4ha,sy5rm,sy4gr,syjd,sy9l,sy5rl,sy4gq,sy2q5,sy272,sy5rj,syia,sy8m3,sy8m4,sy1n0,sy1m3,sy1lp,sy1lo,sy1lf,sy1lr,sy1ln,sy1lq,sy1ly,sy4gd,sy4ge,sy1ll,sy1lm,sy8pj,sy5zt,qmjr3,sy8pg,sy5up,IQw9J,sy5t4,sy39o,sy177,sy39r,sy39p,sy53s,sy20o,sy53n,sy53q,sy20p,sy53o,sy39q,sy53p,sy53k,sy53j,sy53l,sy1r8,sy53m,sy27z,sy27x,sy3ym,sy27y,sy282,sy285,sy27v,sylq,sylr,sy27w,sy1rn,sy281,sym0,sy3yj,sy3b6,sy1s6,sy15b,sy15c,sy157,sy15d,sy53h,ily0Be,sy64g,sy3wn,Zihehd,sy60u,sy15i,sy3md,mf2ifc,sy311,sy310,n7qy6d,sy313,HPGtmd,sy2hw,sy316,sy314,sy169,syvo,syvb,syv8,syv7,syup,syuo,syru,sy30b,uLYJpc?cb=121509378&xjs=s3",
+    "oldUrl": "https://www.google.com/xjs/_/js/k=xjs.s.en.omJKIUUxeBw.2023.O/ck=xjs.s.5xo7A19oC_E.L.B1.O/am=CAAIAAAAAAAAAAQAAAAAAAAAAAAAAgQQAQAAAAAAAAAAAAAAAAAAIAQAAgAAEAAAAAAAAAAAAAAAAAAAAAAAACAQAAgAAAAAAAAAAAAAAgAAAQAAAAAAgiAAAIAAAgKAAACgBAABAABACIAGRAAAAQAAAAAAAAAAAKDQAxAAAAUAAAAAAAAewADAIxAAAAAAAAAAAAACAAAAEIBACACQAAAAAAAAAAAAAABAAAEAAABAAAAAQAAAAIABAAAIACAAqAAAAABUAAAAAAQAAAAAEAAAAAAAAAAAgAATABEgABABAQAAABAAAOAfxnwDAIAHAAAAAABAAQIAAAAAAAAAQAQAAAAQAAAAAAAAAEAQIjgAAAAAAADBsAAAAABgBBAAQCAAAgiAAAAAAAAAAAAAAIBIABEAABAAAAAAAGAAAAAAAAAAAAAAIAgAQggEAAgACgACrggFAAABAOAAAAAIAAAAAADQCAEiAAAAAAAAABQAAAAAAAAAAAgBCAAAAAJAAAAoAAAAAAAAggAAAAAAAAAACKQAAhAAMAIJACTFWRcgAgBAAAABAwAABBAUAAAAAAAAIfEDAAAIAIAAAAAAIgAAAAAAAAAAAAAAAgABAAAAgCUAWEAAAAoAAADAAXg8wBBBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAQwBxICgJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKnrK1gCA/d=0/dg=0/br=1/ujg=1/rs=ACT90oGPQnG2DvMCLcQUJCfV2k8jLJiIBg/cb=loaded_h_0/m=syj4,aLUfP,wQlYve,sy9e7,sy5cr,sy9e6,sy9e5,sy5va,sy3bs,sy3df,sy3b8,sy3b9,sy23t,pKhWu,sy23b,sy1yd,sy18t,oQfbDd,abd,sy229,TDFkye,sy23l,sy23j,IQw9J,sy237,sy22r,sy13u,sy231,sy22v,sy236,sy22f,sy1yq,sy22e,sy22p,sy22n,sy22x,sy22w,sy234,sy232,sy22z,sy230,sy233,sy22s,sy22q,sy22t,sy1px,sy22u,sy22j,sy238,sy22d,sy22i,sy22g,sy22h,sy22c,sy1qi,sy11t,sy11u,sy11p,sy11v,sy22l,ily0Be,sy24b,sy127,Zihehd,sy249,syyn,sy1zf,mf2ifc,sy1xw,sy1xv,n7qy6d,sy1xz,sy1xy,HPGtmd,sy1y2,sy1y3,sy1y0,syzl,syts,sytf,sytc,sytb,syst,syss,syqn,sy1u2,uLYJpc?cb=121509378&xjs=s3",
     "newUrl": "snake.js"
   }
 ];
   
   window.webSnake.blockedUrls = [
-  "https://www.google.com/xjs/_/js/k=xjs.s.en.1gGYAjfJB_o.2019.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADEAABABIAIAAAAAIAAAAAAAAAAAAAAAAACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEAAgACQAAAAAAAAAAAIAgAAAAAAAgAAAAAAAAAGABAAQACEAAAAACgAAAAAAAAAAAAAAAAAAAAAAAAAQBAAAABEIAACAADA3-YbAAAaAAAAAABwAAAAAAAAAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAwAIAAAACAwAACAABARAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAoAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAAAAUAAAAAAAAOAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAABDAAAAAAAAAAAAAAAAACPwAIgAAAAAAAAAQAAAAAAAAABEAAAAAAAAAAQAAEADAAAAAAcgA8HgBDBAUAAAAAAAAAAAAAAAAAAAAAAAAAAARAAcyBJCAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAACQIjwFAAAAAADA1gCA/dg=0/ichc=1/rs=ACT90oEofofHF42UI7JaTooPoddXe-FC4g/cb=loaded_h_0?cb=121509378"
+  "https://www.google.com/xjs/_/js/k=xjs.s.en.omJKIUUxeBw.2023.O/am=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAAKAAACABAABAAAAAAAAAAAAAAAAAAAAAAAAAACAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEIAACACQAAAAAAAAAAAAAABAAAEAAABAAAAAAAAAAIABAAAIACAAiAAAAABQAAAAAAAAAAAAAAAAAAAAAAAAgAAQAAEAABABAQAAABAAAOAfxnwDAIAGAAAAAABAAQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAgAAAAAAAAAAsAAAAAAABBAAACAAAgiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAACgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAIAAAAoAAAAAAAAgAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAABAwAAAAAAAAAAAAAAIPADAAAIAAAAAAAAAgAAAAAAAAAAAAAAAgABAAAAAAAAQAAAAAoAAADAAXg8wBBBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAQwBxIAgJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKnrK1gCA/dg=0/ichc=1/rs=ACT90oGZmAWvN4IPmqoVf8jfS3c8tVeshQ/cb=loaded_h_0?cb=121509378"
 ];
 
   window.webSnake.xjsFingerprint = function(url) {
@@ -59,179 +59,11 @@
       code.indexOf("snake_arcade") !== -1;
   };
 
-  window.webSnake._modInfoCache = null;
-  window.webSnake._modInfoUrl =
-    "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeModLoader/main/build/mod-info.json";
-
-  window.webSnake.getGameVersionFromUrl = function() {
-    var href = window.location.href;
-    if (href.indexOf("v/current") !== -1) {
-      return typeof window.webLatestVersion === "number" ? window.webLatestVersion : 13;
-    }
-    var match = href.match(/v\/(\d+)/);
-    return match ? parseInt(match[1], 10) : 13;
-  };
-
-  window.webSnake.readAdvancedSettings = function() {
-    try {
-      return JSON.parse(localStorage.getItem("snakeAdvancedSettings") || "{}") || {};
-    } catch (err) {
-      return {};
-    }
-  };
-
-  // customUrl is not in mod-info.json; the picker stores it in Advanced Settings.
-  window.webSnake.injectLocalModConfigs = function() {
-    if (!window.webSnake._modInfoCache || typeof window.webSnake._modInfoCache !== "object") {
-      window.webSnake._modInfoCache = { modsConfig: {} };
-    }
-    if (!window.webSnake._modInfoCache.modsConfig) {
-      window.webSnake._modInfoCache.modsConfig = {};
-    }
-    var advanced = window.webSnake.readAdvancedSettings();
-    window.webSnake._modInfoCache.modsConfig.customUrl = {
-      displayName: "Load from url",
-      customModName: advanced.customModName || "",
-      url: advanced.customUrl || "",
-      hasUrl: true
-    };
-  };
-
-  window.webSnake.resolveModObjectName = function(modName, modConfig) {
-    if (modConfig && modConfig.customModName &&
-        (modName === "customUrl" || localStorage.getItem("snakeForceDevMode") === "true")) {
-      return modConfig.customModName;
-    }
-    return modName;
-  };
-
-  window.webSnake.redirectToGameVersion = function(gameVersion) {
-    var latest = typeof window.webLatestVersion === "number" ? window.webLatestVersion : 13;
-    if (gameVersion === latest) {
-      window.location.href = "../../v/current/";
-    } else {
-      window.location.href = "../../v/" + gameVersion + "/";
-    }
-  };
-
-  window.webSnake.getSelectedModConfig = function(modName) {
-    if (!modName || modName === "none" || !window.webSnake._modInfoCache) {
-      return null;
-    }
-    var modsConfig = window.webSnake._modInfoCache.modsConfig;
-    return modsConfig && modsConfig[modName] ? modsConfig[modName] : null;
-  };
-
-  window.webSnake.ensureSelectedModLoaded = function(modName) {
-    if (!modName || modName === "none") {
-      return false;
-    }
-
-    if (!window.webSnake._modInfoCache) {
-      try {
-        var infoReq = new XMLHttpRequest();
-        infoReq.open("GET", window.webSnake._modInfoUrl, false);
-        infoReq.send();
-        if (infoReq.status === 200) {
-          window.webSnake._modInfoCache = JSON.parse(infoReq.responseText);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    window.webSnake.injectLocalModConfigs();
-
-    var modsConfig = window.webSnake._modInfoCache && window.webSnake._modInfoCache.modsConfig;
-    if (!modsConfig || !modsConfig[modName]) {
-      return false;
-    }
-
-    var modConfig = modsConfig[modName];
-    var objectName = window.webSnake.resolveModObjectName(modName, modConfig);
-    if (window[objectName]) {
-      return true;
-    }
-
-    if (window.isSnakeMobileVersion && modConfig.mobile && modConfig.mobile.support === false) {
-      console.warn("Mod " + modName + " does not support mobile");
-      return false;
-    }
-
-    if (!modConfig.hasUrl) {
-      return !!window[objectName];
-    }
-
-    var isCustomUrl = modName === "customUrl";
-    var modUrl = modConfig.url;
-    if (!isCustomUrl && Array.isArray(modConfig.web) && modConfig.web.length > 0) {
-      var gameVersion = window.webSnake.getGameVersionFromUrl();
-      var webEntry = null;
-      for (var i = 0; i < modConfig.web.length; i++) {
-        if (modConfig.web[i].version === gameVersion) {
-          webEntry = modConfig.web[i];
-          break;
-        }
-      }
-      if (!webEntry) {
-        var supportedVersions = modConfig.web.map(function(entry) { return entry.version; });
-        var latestSupported = Math.max.apply(null, supportedVersions);
-        console.warn(
-          "Mod " + modName + " does not support game version " + gameVersion +
-          ". Redirecting to version " + latestSupported + "."
-        );
-        window.webSnake.redirectToGameVersion(latestSupported);
-        return false;
-      }
-      modUrl = webEntry.url;
-    }
-
-    if (!modUrl || modUrl.indexOf("PLEASE_CHOOSE") === 0) {
-      console.warn("customUrl is selected but Advanced Settings has no URL");
-      return false;
-    }
-
-    console.log("Preloading selected mod: " + modName +
-      (objectName && objectName !== modName ? " (" + objectName + ")" : "") +
-      " from " + modUrl);
-    try {
-      var modReq = new XMLHttpRequest();
-      modReq.open("GET", modUrl, false);
-      modReq.send();
-      if (modReq.status !== 200) {
-        console.log("Loading selected mod returned non-200 status. Received: " + modReq.status);
-        return false;
-      }
-      (0, eval)(modReq.responseText);
-    } catch (err) {
-      console.error("Failed to load mod from " + modUrl, err);
-      return false;
-    }
-
-    if (!window[objectName]) {
-      console.warn(
-        "Loaded " + modUrl + " but window." + objectName + " is missing. " +
-        "Set Custom Mod Name in Advanced Settings to the global the file assigns " +
-        "(PuddingMod, SpeedrunMod, moreMenu, ...)."
-      );
-      return false;
-    }
-    return true;
-  };
-
   window.webSnake.applySelectedMod = function(code) {
     if (!window.webSnake.looksLikeSnakeJs(code) || window.webSnake._modsApplied) return code;
     var modName = localStorage.getItem("snakeChosenMod") || "none";
     if (!modName || modName === "none") return code;
-    var modConfig = window.webSnake.getSelectedModConfig(modName);
-    var objectName = window.webSnake.resolveModObjectName(modName, modConfig || {});
-    var mod = window[objectName];
-    if (!mod) {
-      window.webSnake.ensureSelectedModLoaded(modName);
-      modConfig = window.webSnake.getSelectedModConfig(modName);
-      objectName = window.webSnake.resolveModObjectName(modName, modConfig || {});
-      mod = window[objectName];
-    }
+    var mod = window[modName];
     if (!mod) {
       console.warn("Selected mod is not loaded:", modName);
       return code;
@@ -250,7 +82,7 @@
       }
     }
     if (mod.runCodeAfter) {
-      code += ";\nvoid (function(){try{window[" + JSON.stringify(objectName) + "].runCodeAfter()}catch(e){console.error(e)}})();";
+      code += ";\nvoid (function(){try{window[" + JSON.stringify(modName) + "].runCodeAfter()}catch(e){console.error(e)}})();";
     }
     console.log("Applied mod to snake.js:", modName);
     return code;
@@ -328,12 +160,5 @@
       }
       return nativeAppendChild.call(this, el);
     };
-  })();
-
-  (function preloadSelectedModForUrlRules() {
-    var modName = localStorage.getItem("snakeChosenMod") || "none";
-    if (modName && modName !== "none") {
-      window.webSnake.ensureSelectedModLoaded(modName);
-    }
   })();
 
