@@ -63,13 +63,21 @@
   window.webSnake._modInfoUrl =
     "https://raw.githubusercontent.com/DarkSnakeGang/GoogleSnakeModLoader/main/build/mod-info.json";
 
+  // webLatestVersion is a top-level `let` in snake-web-initial.js, so it is reachable by name
+  // (never as window.webLatestVersion) and only once that script has run. Returns null before then.
+  window.webSnake.getLatestVersion = function() {
+    if (typeof webLatestVersion === "number") return webLatestVersion;
+    if (typeof window.webLatestVersion === "number") return window.webLatestVersion;
+    return null;
+  };
+
   window.webSnake.getGameVersionFromUrl = function() {
     var href = window.location.href;
     if (href.indexOf("v/current") !== -1) {
-      return typeof window.webLatestVersion === "number" ? window.webLatestVersion : 13;
+      return window.webSnake.getLatestVersion();
     }
     var match = href.match(/v\/(\d+)/);
-    return match ? parseInt(match[1], 10) : 13;
+    return match ? parseInt(match[1], 10) : window.webSnake.getLatestVersion();
   };
 
   window.webSnake.readAdvancedSettings = function() {
@@ -106,8 +114,8 @@
   };
 
   window.webSnake.redirectToGameVersion = function(gameVersion) {
-    var latest = typeof window.webLatestVersion === "number" ? window.webLatestVersion : 13;
-    if (gameVersion === latest) {
+    window.webSnake._redirecting = true;
+    if (gameVersion === window.webSnake.getLatestVersion()) {
       window.location.href = "../../v/current/";
     } else {
       window.location.href = "../../v/" + gameVersion + "/";
@@ -123,7 +131,7 @@
   };
 
   window.webSnake.ensureSelectedModLoaded = function(modName) {
-    if (!modName || modName === "none") {
+    if (!modName || modName === "none" || window.webSnake._redirecting) {
       return false;
     }
 
@@ -174,7 +182,16 @@
         }
       }
       if (!webEntry) {
-        var supportedVersions = modConfig.web.map(function(entry) { return entry.version; });
+        // Only consider versions this site actually hosts, otherwise we'd redirect to a 404.
+        var latestVersion = window.webSnake.getLatestVersion();
+        var supportedVersions = modConfig.web
+          .map(function(entry) { return entry.version; })
+          .filter(function(v) { return typeof v === "number" && (latestVersion === null || v <= latestVersion); });
+        if (gameVersion === null || supportedVersions.length === 0) {
+          console.warn("Mod " + modName + " does not support game version " + gameVersion +
+            " and no other supported version is available on this site.");
+          return false;
+        }
         var latestSupported = Math.max.apply(null, supportedVersions);
         console.warn(
           "Mod " + modName + " does not support game version " + gameVersion +
@@ -331,9 +348,24 @@
   })();
 
   (function preloadSelectedModForUrlRules() {
-    var modName = localStorage.getItem("snakeChosenMod") || "none";
-    if (modName && modName !== "none") {
-      window.webSnake.ensureSelectedModLoaded(modName);
+    // Wait for the rest of the parser-blocking scripts: snake-web-initial.js defines
+    // webLatestVersion (needed to know which version /current is, and where to redirect) and
+    // snake-mod-loader-web.js applies ?mod=. readyState becomes "interactive" before deferred
+    // scripts run, so this still happens before snake-loader.js requests snake.js.
+    function preload() {
+      var modName = localStorage.getItem("snakeChosenMod") || "none";
+      if (modName && modName !== "none") {
+        window.webSnake.ensureSelectedModLoaded(modName);
+      }
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("readystatechange", function onReadyStateChange() {
+        if (document.readyState === "loading") return;
+        document.removeEventListener("readystatechange", onReadyStateChange);
+        preload();
+      });
+    } else {
+      preload();
     }
   })();
 
